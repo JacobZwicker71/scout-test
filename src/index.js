@@ -2,17 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './style.css';
 
-class Node extends React.Component {
-  constructor(props) {
-    super(props);
+class Node {
+  constructor(_position, _value) {
     this.state = {
-      position: this.props.position,
-      value: this.props.value,
+      position: _position,
+      value: _value,
     }
   }
 
   getValue() {
-    return 1;//(this.state.value);
+    return (this.state.value);
   }
 
   setValue(_value) {
@@ -33,7 +32,7 @@ class Node extends React.Component {
 function NodeOut(props) {
   return (
     <button className="node" onClick={props.onClick}>
-      {props.value}
+      {() => props.value.getValue()}
     </button>
   );
 }
@@ -54,29 +53,29 @@ class Grid extends React.Component {
     const nodes = this.state.nodes.slice();
     
     if (i % 3 === 2) {
-      if (this.state.nodes[i].state.value === null) {
+      if (this.state.nodes[i].getValue() === null) {
         this.state.nodes[i].setValue('x');
       } else {
-        this.state.nodes[i].setValue(this.state.nodes[i].state.value === 'x' ? 'o' : null);
+        this.state.nodes[i].setValue(this.state.nodes[i].getValue() === 'x' ? 'o' : null);
       }
     } else {
       if ((i % 9 !== 3) && (i % 9 !== 4)) {
-        this.state.nodes[i].setValue(this.state.nodes[i].state.value === null ? 'o' : null);
+        this.state.nodes[i].setValue(this.state.nodes[i].getValue() === null ? 'o' : null);
       } else {
-        this.state.nodes[i].setValue(this.state.nodes[i].state.value === null ? 'x' : null);
+        this.state.nodes[i].setValue(this.state.nodes[i].getValue() === null ? 'x' : null);
       }
     }
 
     this.setState({
       nodes: nodes,
     });
-    console.log(this.state.nodes[i].state.value);
+    console.log(this.state.nodes[i].getValue());
   }
 
   renderNode(i) {
     return(
       <NodeOut
-        value={this.state.nodes[i].state.value}
+        value={this.state.nodes[i]}
         onClick={() => this.update(i)}
       />
     );
