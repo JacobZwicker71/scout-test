@@ -14,7 +14,7 @@ class Grid extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      nodes: Array(9).fill(null),
+      nodes: Array(27).fill(null),
     };
   }
 
@@ -22,7 +22,7 @@ class Grid extends React.Component {
     const nodes = this.state.nodes.slice();
     if ((i + 1) % 3 !== 0) {
       if (nodes[i] === null) {
-        nodes[i] = ((i !== 3  && i !== 4) ? 'o' : 'x');
+        nodes[i] = ((i % 9 !== 3  && i % 9 !== 4) ? 'o' : 'x');
       } else {
         nodes[i] = null;
       }
@@ -107,7 +107,7 @@ class Grid extends React.Component {
           <div className="node-row">
             {this.renderNode(24)}
             {this.renderNode(25)}
-            {this.renderNode(27)}
+            {this.renderNode(26)}
           </div>
         </div>
       </div>
