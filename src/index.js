@@ -7,66 +7,77 @@ class Node extends React.Component {
     super(props);
     this.state = {
       position: this.props.position,
-      value: null,
-      onClick: this.props.onClick,
+      value: this.props.value,
     }
   }
 
   getValue() {
-    return (this.state.value);
+    return 1;//(this.state.value);
   }
 
-  setValue(value) {
-    this.state.value = value
+  setValue(_value) {
+    this.setState ({
+      value: _value,
+    });
   }
 
-  render() {
-    return(
-      <button className="node" onClick={this.state.onClick(this.state.position)}>
-        {this.state.value}
-      </button>
-    );
-  }
+  // render() {
+  //   return(
+  //     <button className="node" onClick={this.state.onClick}>
+  //       {this.state.value}
+  //     </button>
+  //   );
+  // }
+}
+
+function NodeOut(props) {
+  return (
+    <button className="node" onClick={props.onClick}>
+      {props.value}
+    </button>
+  );
 }
 
 class Grid extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      nodes: Array(27).fill(Node),
+      nodes: Array(27).fill(<Node
+                              position={null}
+                              value={null}
+                              onClick={null}
+                            />),
     };
   }
 
-  score(i) {
+  update(i) {
     const nodes = this.state.nodes.slice();
-    if ((i + 1) % 3 !== 0) {
-      if (nodes[i].getValue() === null) {
-        nodes[i].setValue(((i % 9 !== 3  && i % 9 !== 4) ? 'o' : 'x'));
+    
+    if (i % 3 === 2) {
+      if (this.state.nodes[i].state.value === null) {
+        this.state.nodes[i].setValue('x');
       } else {
-        nodes[i].setValue(null);
+        this.state.nodes[i].setValue(this.state.nodes[i].state.value === 'x' ? 'o' : null);
       }
     } else {
-      if (nodes[i].getValue() === null) {
-        nodes[i].setValue(((nodes[i].getValue() === 'x') ? 'o' : 'x'));
-      }
-      else if (nodes[i].getValue() === 'x') {
-        nodes[i].setValue('o');
-      }
-      else {
-        nodes[i].setValue(null);
+      if ((i % 9 !== 3) && (i % 9 !== 4)) {
+        this.state.nodes[i].setValue(this.state.nodes[i].state.value === null ? 'o' : null);
+      } else {
+        this.state.nodes[i].setValue(this.state.nodes[i].state.value === null ? 'x' : null);
       }
     }
+
     this.setState({
       nodes: nodes,
     });
+    console.log(this.state.nodes[i].state.value);
   }
 
   renderNode(i) {
     return(
-      <Node
-        position={i}
-        value={this.state.nodes[i]}
-        onClick={() => this.score(i)}
+      <NodeOut
+        value={this.state.nodes[i].state.value}
+        onClick={() => this.update(i)}
       />
     );
   }
