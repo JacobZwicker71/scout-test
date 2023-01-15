@@ -7,14 +7,22 @@ class Node extends React.Component {
     super(props);
     this.state = {
       position: this.props.position,
-      value: this.props.value,
+      value: null,
       onClick: this.props.onClick,
     }
   }
 
+  getValue() {
+    return (this.state.value);
+  }
+
+  setValue(value) {
+    this.state.value = value
+  }
+
   render() {
     return(
-      <button className="node" onClick={() => this.state.onClick(this.state.position)}>
+      <button className="node" onClick={this.state.onClick(this.state.position)}>
         {this.state.value}
       </button>
     );
@@ -25,27 +33,27 @@ class Grid extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      nodes: Array(27).fill(null),
+      nodes: Array(27).fill(Node),
     };
   }
 
   score(i) {
     const nodes = this.state.nodes.slice();
     if ((i + 1) % 3 !== 0) {
-      if (nodes[i] === null) {
-        nodes[i] = ((i % 9 !== 3  && i % 9 !== 4) ? 'o' : 'x');
+      if (nodes[i].getValue() === null) {
+        nodes[i].setValue(((i % 9 !== 3  && i % 9 !== 4) ? 'o' : 'x'));
       } else {
-        nodes[i] = null;
+        nodes[i].setValue(null);
       }
     } else {
-      if (nodes[i] === null) {
-        nodes[i] = ((nodes[i] === 'x') ? 'o' : 'x');
+      if (nodes[i].getValue() === null) {
+        nodes[i].setValue(((nodes[i].getValue() === 'x') ? 'o' : 'x'));
       }
-      else if (nodes[i] === 'x') {
-        nodes[i] = 'o';
+      else if (nodes[i].getValue() === 'x') {
+        nodes[i].setValue('o');
       }
       else {
-        nodes[i] = null;
+        nodes[i].setValue(null);
       }
     }
     this.setState({
