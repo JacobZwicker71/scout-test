@@ -2,12 +2,23 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './style.css';
 
-function Node(props) {
-  return(
-    <button className="node" onClick={props.onClick}>
-      {props.value}
-    </button>
-  );
+class Node extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      position: this.props.position,
+      value: this.props.value,
+      onClick: this.props.onClick,
+    }
+  }
+
+  render() {
+    return(
+      <button className="node" onClick={() => this.state.onClick(this.state.position)}>
+        {this.state.value}
+      </button>
+    );
+  }
 }
 
 class Grid extends React.Component {
@@ -45,6 +56,7 @@ class Grid extends React.Component {
   renderNode(i) {
     return(
       <Node
+        position={i}
         value={this.state.nodes[i]}
         onClick={() => this.score(i)}
       />
