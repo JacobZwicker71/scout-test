@@ -14,38 +14,37 @@ class Grid extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      nodes: Array(27).fill(null),
+      nodes: Array.from(Array(27), () => new Array(2))
     };
   }
 
   score(i) {
     const nodes = this.state.nodes.slice();
-    if ((i + 1) % 3 !== 0) {
-      if (nodes[i] === null) {
-        nodes[i] = ((i % 9 !== 3  && i % 9 !== 4) ? 'o' : 'x');
+    if (i % 3 === 2) {
+      if (nodes[i][0] == null) {
+        nodes[i][0] = 'x';
       } else {
-        nodes[i] = null;
+        nodes[i][0] = nodes[i][0] === 'x' ? 'o' : null;
       }
     } else {
-      if (nodes[i] === null) {
-        nodes[i] = ((nodes[i] === 'x') ? 'o' : 'x');
-      }
-      else if (nodes[i] === 'x') {
-        nodes[i] = 'o';
-      }
-      else {
-        nodes[i] = null;
-      }
+      if (nodes[i][0] == null) {
+        nodes[i][0] = i % 9 === 3 || i % 9 === 4 ? 'x' : 'o';
+      } else {
+        nodes[i][0] = null;
+      }      
     }
+
     this.setState({
       nodes: nodes,
     });
+
+    console.log("click");
   }
 
   renderNode(i) {
     return(
       <Node
-        value={this.state.nodes[i]}
+        value={this.state.nodes[i][0]}
         onClick={() => this.score(i)}
       />
     );
