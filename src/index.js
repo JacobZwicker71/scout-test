@@ -20,7 +20,7 @@ class Node {
 function NodeOut(props) {
   return (
     <button className="node" onClick={props.onClick}>
-      {props.value}
+      {props.Node.value}
     </button>
   );
 }
@@ -29,37 +29,39 @@ class Grid extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      nodes: Array(27).fill(new Node()),
+      nodes: Array(27).fill(null),
     };
+    for (let i = 0; i < this.state.nodes.length; i++) {
+      this.state.nodes[i] = new Node();
+    }
   }
 
   update(i) {
     const nodes = this.state.nodes.slice();
     
     if (i % 3 === 2) {
-      if (nodes[i].value === null) {
+      if (nodes[i].value == null) {
         nodes[i].value = 'x';
       } else {
         nodes[i].value = nodes[i].value === 'x' ? 'o' : null;
       }
     } else {
       if ((i % 9 !== 3) && (i % 9 !== 4)) {
-        nodes[i].value = nodes[i].value === null ? 'o' : null;
+        nodes[i].value = nodes[i].value == null ? 'o' : null;
       } else {
-        nodes[i].value = nodes[i].value === null ? 'x' : null;
+        nodes[i].value = nodes[i].value == null ? 'x' : null;
       }
     }
 
     this.setState({
       nodes: nodes,
     });
-    console.log(nodes[i].value);
   }
 
   renderNode(i) {
     return(
       <NodeOut
-        value={this.state.nodes[i].value}
+        Node={this.state.nodes[i]}
         onClick={() => this.update(i)}
       />
     );
