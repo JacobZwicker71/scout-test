@@ -3,18 +3,18 @@ import ReactDOM from 'react-dom/client';
 import './style.css';
 
 class Node {
-  #out = 0;
-  #points = 0;
+  #out = null;
+  #pointsNode = 0;
   constructor(out, points) {
     this.#out = out;
-    this.#points = points;
+    this.#pointsNode = points;
   }
 
   get out() { return (this.#out); }
-  get points() { return (this.#points); }
+  get pointsNode() { return (this.#pointsNode); }
 
   set out(out) { this.#out = out; }
-  set points(points) { this.#points = points; }
+  set pointsNode(points) { this.#pointsNode = points; }
 }
 
 function NodeOut(props) {
@@ -23,6 +23,29 @@ function NodeOut(props) {
       {props.Node.out}
     </button>
   );
+}
+
+class ChargeStation {
+  #out = null;
+  #pointsCharge = 0;
+  constructor(out, points) {
+    this.#out = out;
+    this.#pointsCharge = points;
+  }
+
+  get out() { return (this.#out); }
+  get pointsCharge() { return (this.#pointsCharge); }
+
+  set out(out) { this.#out = out; }
+  set pointsCharge(points) { this.#pointsCharge = points; }
+}
+
+function ChargeOut(props) {
+  return (
+    <button className="chargeStation" onClick={props.onClick}>
+      {props.ChargeStation.out}
+    </button>
+  )
 }
 
 class Grid extends React.Component {
@@ -36,7 +59,7 @@ class Grid extends React.Component {
     }
   }
 
-  update(i) {
+  score(i) {
     const nodes = this.state.nodes.slice();
     
     if (i % 3 === 2) {
@@ -54,16 +77,16 @@ class Grid extends React.Component {
     }
 
     if (i % 3 === 0) {
-      nodes[i].points = nodes[i].out == null ? 0 : 5;
+      nodes[i].pointsNode = nodes[i].out == null ? 0 : 5;
     }
     else if (i % 3 === 1) {
-      nodes[i].points = nodes[i].out == null ? 0 : 3;
+      nodes[i].pointsNode = nodes[i].out == null ? 0 : 3;
     }
     else {
-      nodes[i].points = nodes[i].out == null ? 0 : 2;
+      nodes[i].pointsNode = nodes[i].out == null ? 0 : 2;
     }
 
-    console.log(nodes[i].points);
+    console.log(nodes[i].pointsNode);
 
     this.setState({
       nodes: nodes,
@@ -74,7 +97,7 @@ class Grid extends React.Component {
     return(
       <NodeOut
         Node={this.state.nodes[i]}
-        onClick={() => this.update(i)}
+        onClick={() => this.score(i)}
       />
     );
   }
@@ -143,12 +166,62 @@ class Grid extends React.Component {
   }
 }
 
+class Community extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      chargeStation: new ChargeStation(),
+    }
+  }
+
+  score() {
+    const chargeStation = this.state.chargeStation;
+
+    if (chargeStation.out == null) {
+      chargeStation.out = "-";
+      chargeStation.pointsCharge = 6;
+    }
+    else if (chargeStation.out === "-") {
+      chargeStation.out = "+";
+      chargeStation.pointsCharge = 10;
+    }
+    else {
+      chargeStation.out = null;
+      chargeStation.pointsCharge = 0;
+    }
+
+    this.setState({
+      chargeStation: chargeStation,
+    });
+  }
+
+  renderCharge() {
+    return(
+      <ChargeOut
+        ChargeStation={this.state.chargeStation}
+        onClick={() => this.score()}
+      />
+    );
+  }
+
+  render() {
+    return(
+      <div className="Community">
+        {this.renderCharge()}
+      </div>
+    );
+  }
+}
+
 class Field extends React.Component {
   render() {
     return (
       <div className="field-container">
         <div className="game-field">
           <Grid />
+        </div>
+        <div className="Community-container">
+          <Community />
         </div>
       </div>
     );
