@@ -2,10 +2,25 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './style.css';
 
-function Node(props) {
-  return(
+class Node {
+  #value = 0;
+  constructor(value) {
+    this.#value = value;
+  }
+
+  get value() {
+    return (this.#value);
+  }
+
+  set value(_value) {
+    this.#value = _value;
+  }
+}
+
+function NodeOut(props) {
+  return (
     <button className="node" onClick={props.onClick}>
-      {props.value}
+      {props.Node.value}
     </button>
   );
 }
@@ -16,22 +31,26 @@ class Grid extends React.Component {
     this.state = {
       nodes: Array.from(Array(27), () => new Array(2))
     };
+    for (let i = 0; i < this.state.nodes.length; i++) {
+      this.state.nodes[i] = new Node();
+    }
   }
 
-  score(i) {
+  update(i) {
     const nodes = this.state.nodes.slice();
+    
     if (i % 3 === 2) {
-      if (nodes[i][0] == null) {
-        nodes[i][0] = 'x';
+      if (nodes[i].value == null) {
+        nodes[i].value = 'x';
       } else {
-        nodes[i][0] = nodes[i][0] === 'x' ? 'o' : null;
+        nodes[i].value = nodes[i].value === 'x' ? 'o' : null;
       }
     } else {
-      if (nodes[i][0] == null) {
-        nodes[i][0] = i % 9 === 3 || i % 9 === 4 ? 'x' : 'o';
+      if ((i % 9 !== 3) && (i % 9 !== 4)) {
+        nodes[i].value = nodes[i].value == null ? 'o' : null;
       } else {
-        nodes[i][0] = null;
-      }      
+        nodes[i].value = nodes[i].value == null ? 'x' : null;
+      }
     }
 
     this.setState({
@@ -43,9 +62,9 @@ class Grid extends React.Component {
 
   renderNode(i) {
     return(
-      <Node
-        value={this.state.nodes[i][0]}
-        onClick={() => this.score(i)}
+      <NodeOut
+        Node={this.state.nodes[i]}
+        onClick={() => this.update(i)}
       />
     );
   }
