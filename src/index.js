@@ -3,36 +3,24 @@ import ReactDOM from 'react-dom/client';
 import './style.css';
 
 class Node {
-  constructor(_position, _value) {
-    this.state = {
-      position: _position,
-      value: _value,
-    }
+  #value = 0;
+  constructor(value) {
+    this.#value = value;
   }
 
-  getValue() {
-    return (this.state.value);
+  get value() {
+    return (this.#value);
   }
 
-  setValue(_value) {
-    this.setState ({
-      value: _value,
-    });
+  set value(_value) {
+    this.#value = _value;
   }
-
-  // render() {
-  //   return(
-  //     <button className="node" onClick={this.state.onClick}>
-  //       {this.state.value}
-  //     </button>
-  //   );
-  // }
 }
 
 function NodeOut(props) {
   return (
     <button className="node" onClick={props.onClick}>
-      {() => props.value.getValue()}
+      {props.value}
     </button>
   );
 }
@@ -41,11 +29,7 @@ class Grid extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      nodes: Array(27).fill(<Node
-                              position={null}
-                              value={null}
-                              onClick={null}
-                            />),
+      nodes: Array(27).fill(new Node()),
     };
   }
 
@@ -53,29 +37,29 @@ class Grid extends React.Component {
     const nodes = this.state.nodes.slice();
     
     if (i % 3 === 2) {
-      if (this.state.nodes[i].getValue() === null) {
-        this.state.nodes[i].setValue('x');
+      if (nodes[i].value === null) {
+        nodes[i].value = 'x';
       } else {
-        this.state.nodes[i].setValue(this.state.nodes[i].getValue() === 'x' ? 'o' : null);
+        nodes[i].value = nodes[i].value === 'x' ? 'o' : null;
       }
     } else {
       if ((i % 9 !== 3) && (i % 9 !== 4)) {
-        this.state.nodes[i].setValue(this.state.nodes[i].getValue() === null ? 'o' : null);
+        nodes[i].value = nodes[i].value === null ? 'o' : null;
       } else {
-        this.state.nodes[i].setValue(this.state.nodes[i].getValue() === null ? 'x' : null);
+        nodes[i].value = nodes[i].value === null ? 'x' : null;
       }
     }
 
     this.setState({
       nodes: nodes,
     });
-    console.log(this.state.nodes[i].getValue());
+    console.log(nodes[i].value);
   }
 
   renderNode(i) {
     return(
       <NodeOut
-        value={this.state.nodes[i]}
+        value={this.state.nodes[i].value}
         onClick={() => this.update(i)}
       />
     );
