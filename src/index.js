@@ -3,24 +3,24 @@ import ReactDOM from 'react-dom/client';
 import './style.css';
 
 class Node {
-  #value = 0;
-  constructor(value) {
-    this.#value = value;
+  #out = 0;
+  #points = 0;
+  constructor(out, points) {
+    this.#out = out;
+    this.#points = points;
   }
 
-  get value() {
-    return (this.#value);
-  }
+  get out() { return (this.#out); }
+  get points() { return (this.#points); }
 
-  set value(_value) {
-    this.#value = _value;
-  }
+  set out(out) { this.#out = out; }
+  set points(points) { this.#points = points; }
 }
 
 function NodeOut(props) {
   return (
     <button className="node" onClick={props.onClick}>
-      {props.Node.value}
+      {props.Node.out}
     </button>
   );
 }
@@ -40,24 +40,34 @@ class Grid extends React.Component {
     const nodes = this.state.nodes.slice();
     
     if (i % 3 === 2) {
-      if (nodes[i].value == null) {
-        nodes[i].value = 'x';
+      if (nodes[i].out == null) {
+        nodes[i].out = 'x';
       } else {
-        nodes[i].value = nodes[i].value === 'x' ? 'o' : null;
+        nodes[i].out = nodes[i].out === 'x' ? 'o' : null;
       }
     } else {
       if ((i % 9 !== 3) && (i % 9 !== 4)) {
-        nodes[i].value = nodes[i].value == null ? 'o' : null;
+        nodes[i].out = nodes[i].out == null ? 'o' : null;
       } else {
-        nodes[i].value = nodes[i].value == null ? 'x' : null;
+        nodes[i].out = nodes[i].out == null ? 'x' : null;
       }
     }
+
+    if (i % 3 === 0) {
+      nodes[i].points = nodes[i].out == null ? 0 : 5;
+    }
+    else if (i % 3 === 1) {
+      nodes[i].points = nodes[i].out == null ? 0 : 3;
+    }
+    else {
+      nodes[i].points = nodes[i].out == null ? 0 : 2;
+    }
+
+    console.log(nodes[i].points);
 
     this.setState({
       nodes: nodes,
     });
-
-    console.log("click");
   }
 
   renderNode(i) {
