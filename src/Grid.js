@@ -1,6 +1,8 @@
 import React from 'react';
 import './style.css';
 
+import Auto from './Auto.js';
+
 class Grid extends React.Component {
   constructor(props) {
     super(props);
@@ -29,17 +31,32 @@ class Grid extends React.Component {
       }
     }
 
-    if (i % 3 === 0) {
-      nodes[i].pointsNode = nodes[i].out == null ? 0 : 5;
-    }
-    else if (i % 3 === 1) {
-      nodes[i].pointsNode = nodes[i].out == null ? 0 : 3;
-    }
-    else {
-      nodes[i].pointsNode = nodes[i].out == null ? 0 : 2;
+    if (Auto.autoState) {
+      if (i % 3 === 0) {
+        nodes[i].pointsNode = nodes[i].out == null ? 0 : 6;
+      }
+      else if (i % 3 === 1) {
+        nodes[i].pointsNode = nodes[i].out == null ? 0 : 4;
+      }
+      else {
+        nodes[i].pointsNode = nodes[i].out == null ? 0 : 3;
+      }
+      console.log("click");
+    } else {
+      if (i % 3 === 0) {
+        nodes[i].pointsNode = nodes[i].out == null ? 0 : 5;
+      }
+      else if (i % 3 === 1) {
+        nodes[i].pointsNode = nodes[i].out == null ? 0 : 3;
+      }
+      else {
+        nodes[i].pointsNode = nodes[i].out == null ? 0 : 2;
+      }
+      console.log("clack");
     }
 
     console.log(nodes[i].pointsNode);
+    console.log(Auto.autoState)
 
     this.setState({
       nodes: nodes,
@@ -142,10 +159,4 @@ function NodeOut(props) {
   );
 }
 
-export default function grid() {
-  return (
-    <section>
-      <Grid />
-    </section>
-  )
-}
+export default Grid;

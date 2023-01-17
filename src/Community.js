@@ -71,10 +71,4 @@ function ChargeOut(props) {
   )
 }
 
-export default function community() {
-  return (
-    <section>
-      <Community />
-    </section>
-  )
-}
+export default Community;

@@ -4,13 +4,14 @@ import './style.css';
 function AutoButton(props) {
   return (
     <button className='auto' onClick={props.onClick}>
-      {"Auto\n"}
+      {"Auto "}
       {props.auto ? "on" : "off"}
     </button>
   )
 }
 
 class Auto extends React.Component {
+  static autoState;
   constructor(props) {
     super(props);
     this.state = {
@@ -18,8 +19,10 @@ class Auto extends React.Component {
     }
   }
 
+  get autoState() { console.log(this.state.autoState); return this.state.autoState; }
+
   autoToggle() {
-    const autoState = this.state.autoState;
+    const autoState = this.autoState;
 
     this.setState({
       autoState: !autoState
@@ -29,7 +32,7 @@ class Auto extends React.Component {
   renderAuto() {
     return (
       <AutoButton
-        auto={this.state.autoState}
+        auto={this.autoState}
         onClick={() => this.autoToggle()}
       />
     );
@@ -44,10 +47,4 @@ class Auto extends React.Component {
   }
 }
 
-export default function auto() {
-  return (
-    <section>
-      <Auto />
-    </section>
-  )
-}
+export default Auto;
