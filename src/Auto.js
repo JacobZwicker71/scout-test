@@ -11,7 +11,7 @@ function AutoButton(props) {
 }
 
 class Auto extends React.Component {
-  static autoState;
+  // static autoState = true;
   constructor(props) {
     super(props);
     this.state = {
@@ -47,4 +47,6 @@ class Auto extends React.Component {
   }
 }
 
-export default Auto;
+const getState = true;
+
+export { getState, Auto };

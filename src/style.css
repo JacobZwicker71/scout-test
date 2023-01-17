@@ -7,6 +7,10 @@ ol, ul {
   padding-left: 30px;
 }
 
+.node-container {
+  margin: 10px;
+}
+
 .node-row:after {
   clear: both;
   content: "";

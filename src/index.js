@@ -4,7 +4,7 @@ import './style.css';
 
 import Grid from './Grid.js';
 import Community from './Community.js';
-import Auto from './Auto.js';
+import { Auto } from './Auto.js';
 
 class Field extends React.Component {
   render() {

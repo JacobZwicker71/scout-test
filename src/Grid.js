@@ -1,7 +1,30 @@
 import React from 'react';
 import './style.css';
 
-import Auto from './Auto.js';
+import { getState } from './Auto.js';
+
+class Node {
+  #out = null;
+  #pointsNode = 0;
+  constructor(out, points) {
+      this.#out = out;
+      this.#pointsNode = points;
+  }
+
+  get out() { return (this.#out); }
+  get pointsNode() { return (this.#pointsNode); }
+
+  set out(out) { this.#out = out; }
+  set pointsNode(points) { this.#pointsNode = points; }
+  }
+  
+function NodeOut(props) {
+  return (
+    <button className="node" onClick={props.onClick}>
+      {props.Node.out}
+    </button>
+  );
+}
 
 class Grid extends React.Component {
   constructor(props) {
@@ -30,33 +53,22 @@ class Grid extends React.Component {
         nodes[i].out = nodes[i].out == null ? 'x' : null;
       }
     }
-
-    if (Auto.autoState) {
-      if (i % 3 === 0) {
-        nodes[i].pointsNode = nodes[i].out == null ? 0 : 6;
-      }
-      else if (i % 3 === 1) {
-        nodes[i].pointsNode = nodes[i].out == null ? 0 : 4;
-      }
-      else {
-        nodes[i].pointsNode = nodes[i].out == null ? 0 : 3;
-      }
-      console.log("click");
-    } else {
-      if (i % 3 === 0) {
-        nodes[i].pointsNode = nodes[i].out == null ? 0 : 5;
-      }
-      else if (i % 3 === 1) {
-        nodes[i].pointsNode = nodes[i].out == null ? 0 : 3;
-      }
-      else {
-        nodes[i].pointsNode = nodes[i].out == null ? 0 : 2;
-      }
-      console.log("clack");
+    
+    if (i % 3 === 0) {
+      nodes[i].pointsNode = nodes[i].out == null ? 0 : 5;
+    }
+    else if (i % 3 === 1) {
+      nodes[i].pointsNode = nodes[i].out == null ? 0 : 3;
+    }
+    else {
+      nodes[i].pointsNode = nodes[i].out == null ? 0 : 2;
     }
 
-    console.log(nodes[i].pointsNode);
-    console.log(Auto.autoState)
+    // getState ? console.log("clack") : console.log("click");
+    nodes[i].pointsNode += getState ? 1 : 0;
+
+    // console.log(nodes[i].pointsNode);
+    // console.log(getState);
 
     this.setState({
       nodes: nodes,
@@ -76,7 +88,7 @@ class Grid extends React.Component {
     return (
       <div className="grid-container">
       {/* outer 1 */}
-          <div className="node-container">
+        <div className="node-container">
           <div className="node-row">
             {this.renderNode(0)}
             {this.renderNode(1)}
@@ -134,29 +146,6 @@ class Grid extends React.Component {
       </div>
     );
   }
-}
-
-class Node {
-  #out = null;
-  #pointsNode = 0;
-  constructor(out, points) {
-      this.#out = out;
-      this.#pointsNode = points;
-  }
-
-  get out() { return (this.#out); }
-  get pointsNode() { return (this.#pointsNode); }
-
-  set out(out) { this.#out = out; }
-  set pointsNode(points) { this.#pointsNode = points; }
-  }
-  
-function NodeOut(props) {
-  return (
-    <button className="node" onClick={props.onClick}>
-      {props.Node.out}
-    </button>
-  );
 }
 
 export default Grid;
