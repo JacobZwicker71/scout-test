@@ -43,15 +43,15 @@ ol, ul {
 .chargeStation {
   background: #fff;
   border: 1px solid #999;
-  float: right;
+  float: left;
   font-size: 24px;
   font-weight: bold;
   line-height: 34px;
-  height: 68px;
+  height: 136px;
   padding: 0;
   text-align: center;
-  width: 34px;
-  margin: 20px;
+  width: 68px;
+  margin-left: 250px;
 }
 
 .chargeStation:focus {
@@ -60,6 +60,40 @@ ol, ul {
 
 .kbd-navigation .chargeStation:focus {
   background: #ddd;
+}
+
+.auto {
+  background: #fff;
+  border: 1px solid #999;
+  float: left;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 68px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  width: 68px;
+}
+
+.auto:focus {
+  outline: none;
+}
+
+.kbd-navigation .auto:focus {
+  background: #ddd;
+}
+
+.game-container {
+  padding: auto;
+}
+
+.autoContainer {
+  position: absolute;
+  z-index: 1000;
+  margin-left: 250px;
+  float: left;
 }
 
 .field {
