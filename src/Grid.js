@@ -1,7 +1,7 @@
 import React from 'react';
 import './style.css';
 
-import { getState } from './Auto.js';
+import { autoState } from './Auto.js';
 
 class Node {
   #out = null;
@@ -63,12 +63,9 @@ class Grid extends React.Component {
     else {
       nodes[i].pointsNode = nodes[i].out == null ? 0 : 2;
     }
-
-    // getState ? console.log("clack") : console.log("click");
-    nodes[i].pointsNode += getState ? 1 : 0;
-
-    // console.log(nodes[i].pointsNode);
-    // console.log(getState);
+    
+    nodes[i].pointsNode += autoState.state && nodes[i].pointsNode !== 0 ? 1 : 0;
+    console.log(nodes[i].pointsNode)
 
     this.setState({
       nodes: nodes,
@@ -78,8 +75,8 @@ class Grid extends React.Component {
   renderNode(i) {
     return(
       <NodeOut
-        Node={this.state.nodes[i]}
-        onClick={() => this.score(i)}
+        Node = {this.state.nodes[i]}
+        onClick = {() => this.score(i)}
       />
     );
   }
