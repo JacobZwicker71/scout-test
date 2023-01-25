@@ -11,12 +11,16 @@ class Node {
 
   #pointsNode = 0;
 
-  constructor(out, nodeUp, nodeDown, points) {
+  #id = 0;
+
+  constructor(out, nodeUp, nodeDown, points, id) {
       this.#out = out;
       this.#pointsNode = points;
 
       this.#nodeUp = nodeUp;
       this.#nodeDown = nodeDown;
+
+      this.#id = id;
   }
 
   get out() { return this.#out; }
@@ -30,11 +34,17 @@ class Node {
   set pointsNode(points) { this.#pointsNode = points; }
 
   link() {
-    if (this.#nodeUp.#pointsNode !== 0 && this.#pointsNode !== 0 && this.#nodeDown.#pointsNode !== 0) {
-      console.log("link")
-    } else {
-      console.log("lonk")
+    let head = this;
+    while (head.#nodeUp != null) {
+      head = head.#nodeUp;
+      console.log("going up");
     }
+    while (head.#nodeDown != null) {
+      if (head.#pointsNode !== 0) { console.log("test"); return false; }
+      head = head.#nodeDown;
+      console.log("going down");
+    }
+    return true;
   }
 }
   
@@ -52,11 +62,13 @@ class Grid extends React.Component {
     this.state = {
       nodes: Array(27).fill(null)
     };
+    // initiallize list via traversal
     for (let i = 0; i < this.state.nodes.length; i++) {
       this.state.nodes[i] = new Node(null,
-                                    i % 9 === 0 ? null : this.state.nodes[i - 3],
-                                    i % 9 === 3 ? null : this.state.nodes[i + 3],
-                                    0);
+                                    i % 9 < 3 ? null : this.state.nodes[i - 3],
+                                    i % 9 >= 6 ? null : this.state.nodes[i + 3],
+                                    0,
+                                    i);
     }
   }
 
@@ -94,7 +106,7 @@ class Grid extends React.Component {
       nodes: nodes,
     });
 
-    nodes[i].link();
+    console.log(nodes[i].link());
   }
 
   renderNode(i) {
