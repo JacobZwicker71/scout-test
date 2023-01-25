@@ -5,18 +5,38 @@ import { autoState } from './Auto.js';
 
 class Node {
   #out = null;
+
+  #nodeUp = null;
+  #nodeDown = null;
+
   #pointsNode = 0;
-  constructor(out, points) {
+
+  constructor(out, nodeUp, nodeDown, points) {
       this.#out = out;
       this.#pointsNode = points;
+
+      this.#nodeUp = nodeUp;
+      this.#nodeDown = nodeDown;
   }
 
-  get out() { return (this.#out); }
-  get pointsNode() { return (this.#pointsNode); }
+  get out() { return this.#out; }
+  get nodeUp() { return this.#nodeUp; }
+  get nodeDown() { return this.#nodeDown; }
+  get pointsNode() { return this.#pointsNode; }
 
   set out(out) { this.#out = out; }
+  set nodeUp(nodeUp) { this.#nodeUp = nodeUp; }
+  set nodeDown(nodeDown) { this.#nodeDown = nodeDown; }
   set pointsNode(points) { this.#pointsNode = points; }
+
+  link() {
+    if (this.#nodeUp.#pointsNode !== 0 && this.#pointsNode !== 0 && this.#nodeDown.#pointsNode !== 0) {
+      console.log("link")
+    } else {
+      console.log("lonk")
+    }
   }
+}
   
 function NodeOut(props) {
   return (
@@ -30,10 +50,13 @@ class Grid extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      nodes: Array.from(Array(27), () => new Array(2))
+      nodes: Array(27).fill(null)
     };
     for (let i = 0; i < this.state.nodes.length; i++) {
-      this.state.nodes[i] = new Node();
+      this.state.nodes[i] = new Node(null,
+                                    i % 9 === 0 ? null : this.state.nodes[i - 3],
+                                    i % 9 === 3 ? null : this.state.nodes[i + 3],
+                                    0);
     }
   }
 
@@ -70,6 +93,8 @@ class Grid extends React.Component {
     this.setState({
       nodes: nodes,
     });
+
+    nodes[i].link();
   }
 
   renderNode(i) {
