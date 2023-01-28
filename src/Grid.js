@@ -27,6 +27,7 @@ class Node {
   get nodeUp() { return this.#nodeUp; }
   get nodeDown() { return this.#nodeDown; }
   get pointsNode() { return this.#pointsNode; }
+  get id() { return this.#id; }
 
   set out(out) { this.#out = out; }
   set nodeUp(nodeUp) { this.#nodeUp = nodeUp; }
@@ -40,7 +41,7 @@ class Node {
       console.log("going up");
     }
     while (head.#nodeDown != null) {
-      if (head.#pointsNode !== 0) { console.log("test"); return false; }
+      if (head.#pointsNode !== 0) { return false; }
       head = head.#nodeDown;
       console.log("going down");
     }
@@ -64,11 +65,20 @@ class Grid extends React.Component {
     };
     // initiallize list via traversal
     for (let i = 0; i < this.state.nodes.length; i++) {
-      this.state.nodes[i] = new Node(null,
-                                    i % 9 < 3 ? null : this.state.nodes[i - 3],
-                                    i % 9 >= 6 ? null : this.state.nodes[i + 3],
-                                    0,
-                                    i);
+      this.state.nodes[i] = new Node(null, null, null, 0, i)
+      if (i % 9 >= 3) {
+        this.state.nodes[i].nodeUp = this.state.nodes[i - 3];
+        this.state.nodes[i - 3].nodeDown = this.state.nodes[i];
+      }
+      // if (i % 9 < 6) {
+        
+      // }
+      // i % 3 === 2 ? this.state.nodes[i].nodeUp : this.state.nodes[i].nodeUp
+      // this.state.nodes[i] = new Node(null,
+      //                               i % 9 < 3 ? null : this.state.nodes[i - 3],
+      //                               i % 9 >= 6 ? null : this.state.nodes[i + 3],
+      //                               0,
+      //                               i);
     }
   }
 
@@ -106,7 +116,10 @@ class Grid extends React.Component {
       nodes: nodes,
     });
 
-    console.log(nodes[i].link());
+    console.log(nodes[i].link() ? "true" : false);
+
+    // console.log(nodes[i].nodeDown.id == null ? nodes[i].nodeDown.id : "null");
+    // console.log(nodes[i].nodeUp.id == null ? nodes[i].nodeUp.id : "null");
   }
 
   renderNode(i) {
