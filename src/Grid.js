@@ -13,6 +13,8 @@ class Node {
 
   #id = 0;
 
+  #color = false;
+
   constructor(out, nodeUp, nodeDown, points, id) {
       this.#out = out;
       this.#pointsNode = points;
@@ -28,30 +30,45 @@ class Node {
   get nodeDown() { return this.#nodeDown; }
   get pointsNode() { return this.#pointsNode; }
   get id() { return this.#id; }
+  get color() { return this.#color; }
 
   set out(out) { this.#out = out; }
   set nodeUp(nodeUp) { this.#nodeUp = nodeUp; }
   set nodeDown(nodeDown) { this.#nodeDown = nodeDown; }
   set pointsNode(points) { this.#pointsNode = points; }
+  set color(color) { this.#color = color; }
 
   link() {
-    let head = this;
-    while (head.#nodeUp != null) {
-      head = head.#nodeUp;
+    let curr = this;
+    while (curr.#nodeUp != null) {
+      curr = curr.#nodeUp;
       // console.log("going up");
     }
-    while (head.#nodeDown != null) {
-      head = head.#nodeDown;
-      if (head.#out == null) { return false; }
+    while (curr.#nodeDown != null) {
+      if (curr.#out == null) { return false; }
+      curr = curr.#nodeDown;
       // console.log("going down");
     }
+    if (curr.#out == null) { return false; }
     return true;
+  }
+
+  update() {
+    let curr = this;
+    while (curr.#nodeUp != null) {
+      curr = curr.#nodeUp;
+    }
+    while (curr.#nodeDown != null) {
+      curr.#color = this.link();
+      curr = curr.#nodeDown;
+    }
+    curr.#color = this.link();
   }
 }
   
 function NodeOut(props) {
   return (
-    <button className="node" onClick={props.onClick}>
+    <button className={(props.Node.color === true) ? "node-link" : 'node'} onClick={props.onClick}>
       {props.Node.out}
     </button>
   );
@@ -64,7 +81,7 @@ class Grid extends React.Component {
       nodes: Array(27).fill(null)
     };
     for (let i = 0; i < this.state.nodes.length; i++) {
-      this.state.nodes[i] = new Node(null, null, null, 0, i)
+      this.state.nodes[i] = new Node(null, null, null, 0, i, false)
 
       if (i % 9 >= 6) {
         this.state.nodes[i - 6].nodeDown = this.state.nodes[i -3];
@@ -110,6 +127,7 @@ class Grid extends React.Component {
     });
 
     console.log(nodes[i].link() ? "true" : false);
+    nodes[i].update();
 
   }
 

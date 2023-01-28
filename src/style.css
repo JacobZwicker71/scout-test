@@ -22,7 +22,7 @@ ol, ul {
 }
 
 .node {
-  background: #fff;
+  background: #ffffff;
   border: 1px solid #999;
   float: left;
   font-size: 24px;
@@ -41,6 +41,29 @@ ol, ul {
 }
 
 .kbd-navigation .node:focus {
+  background: #ddd;
+}
+
+.node-link {
+  background: #add8e6;
+  border: 1px solid #999;
+  float: left;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 34px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  width: 34px;
+}
+
+.node-link:focus {
+  outline: none;
+}
+
+.kbd-navigation .node-link:focus {
   background: #ddd;
 }
 
