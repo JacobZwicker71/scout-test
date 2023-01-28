@@ -38,12 +38,12 @@ class Node {
     let head = this;
     while (head.#nodeUp != null) {
       head = head.#nodeUp;
-      console.log("going up");
+      // console.log("going up");
     }
     while (head.#nodeDown != null) {
-      if (head.#pointsNode !== 0) { return false; }
       head = head.#nodeDown;
-      console.log("going down");
+      if (head.#out == null) { return false; }
+      // console.log("going down");
     }
     return true;
   }
@@ -63,22 +63,15 @@ class Grid extends React.Component {
     this.state = {
       nodes: Array(27).fill(null)
     };
-    // initiallize list via traversal
     for (let i = 0; i < this.state.nodes.length; i++) {
       this.state.nodes[i] = new Node(null, null, null, 0, i)
-      if (i % 9 >= 3) {
-        this.state.nodes[i].nodeUp = this.state.nodes[i - 3];
+
+      if (i % 9 >= 6) {
+        this.state.nodes[i - 6].nodeDown = this.state.nodes[i -3];
+        this.state.nodes[i - 3].nodeUp = this.state.nodes[i - 6]
         this.state.nodes[i - 3].nodeDown = this.state.nodes[i];
+        this.state.nodes[i].nodeUp = this.state.nodes[i -3];
       }
-      // if (i % 9 < 6) {
-        
-      // }
-      // i % 3 === 2 ? this.state.nodes[i].nodeUp : this.state.nodes[i].nodeUp
-      // this.state.nodes[i] = new Node(null,
-      //                               i % 9 < 3 ? null : this.state.nodes[i - 3],
-      //                               i % 9 >= 6 ? null : this.state.nodes[i + 3],
-      //                               0,
-      //                               i);
     }
   }
 
@@ -118,8 +111,6 @@ class Grid extends React.Component {
 
     console.log(nodes[i].link() ? "true" : false);
 
-    // console.log(nodes[i].nodeDown.id == null ? nodes[i].nodeDown.id : "null");
-    // console.log(nodes[i].nodeUp.id == null ? nodes[i].nodeUp.id : "null");
   }
 
   renderNode(i) {
