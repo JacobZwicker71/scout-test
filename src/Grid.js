@@ -11,6 +11,8 @@ class Node {
 
   #pointsNode = 0;
 
+  #auto = false;
+
   #id = 0;
 
   #color = false;
@@ -29,6 +31,7 @@ class Node {
   get nodeUp() { return this.#nodeUp; }
   get nodeDown() { return this.#nodeDown; }
   get pointsNode() { return this.#pointsNode; }
+  get auto() { return this.#auto; }
   get id() { return this.#id; }
   get color() { return this.#color; }
 
@@ -36,6 +39,8 @@ class Node {
   set nodeUp(nodeUp) { this.#nodeUp = nodeUp; }
   set nodeDown(nodeDown) { this.#nodeDown = nodeDown; }
   set pointsNode(points) { this.#pointsNode = points; }
+  set auto(auto) { this.#auto = auto; }
+  set id(id) {this.#id = id; }
   set color(color) { this.#color = color; }
 
   link() {
@@ -120,13 +125,15 @@ class Grid extends React.Component {
     }
     
     nodes[i].pointsNode += autoState.state && nodes[i].pointsNode !== 0 ? 1 : 0;
-    console.log(nodes[i].pointsNode)
+    nodes[i].auto = autoState.state;
+    console.log(nodes[i].pointsNode);
+    console.log(nodes[i].auto);
 
     this.setState({
       nodes: nodes,
     });
 
-    console.log(nodes[i].link() ? "true" : false);
+    //console.log(nodes[i].link() ? "true" : false);
     nodes[i].update();
 
   }

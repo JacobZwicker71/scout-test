@@ -10,7 +10,7 @@ class autoState {
 
   static toggle() {
     this.state = !this.state;
-    console.log(autoState.state)
+    //console.log(autoState.state)
   }
 }
 
